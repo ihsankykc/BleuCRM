@@ -8,14 +8,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 
 public class ServicesPage extends BasePage {
     @FindBy(xpath = "//div[@id='idea-posts-content']//div[@class='idea-owner']")
-    private List<WebElement> dateOfPost;
+    public List<WebElement> dateOfPost;
 
     @FindBy(xpath = "//div[@id='idea-posts-content']/div")
     public List<WebElement> ideas;
@@ -64,11 +67,38 @@ public class ServicesPage extends BasePage {
     public List<WebElement> errorMessage;
 
 
-    private List<String> getTextOfThePost(){
+    public List<String> getTextOfTheMessages(){
         List<String> dates = new ArrayList<>();
         for (WebElement element : dateOfPost) {
             dates.add(element.getText());
-        } return dates;
+        }
+        return dates;
+    }
+
+    public List<String> getDatesOfTheMessages(){
+        List<String>texts=getTextOfTheMessages();
+        List<String>dateStr=new ArrayList<>();
+        for (String text : texts) {
+            String[] arrOfStr=text.split(".com");
+            for (String s : arrOfStr) {
+                System.out.println(arrOfStr[1]);
+                dateStr.add(arrOfStr[1]);
+            }
+        }
+
+        return dateStr;
+    }
+
+    public void sortByDate() throws ParseException {
+        List<Date> listDates =new ArrayList<>();
+        List<String>datesAsString=getDatesOfTheMessages();
+        SimpleDateFormat dateFormat=new SimpleDateFormat(" MMMM dd, yyyy HH:mma");
+
+        for (String str : datesAsString) {
+            listDates.add(dateFormat.parse(str));
+        }
+
+        System.out.println(listDates.toString());
     }
 
     public void servicesPageModules(String module){
@@ -104,50 +134,42 @@ public class ServicesPage extends BasePage {
         BrowserUtils.waitFor(1);
     }
 
-    public WebElement getFirstIdea(){
-        WebElement firstIdea=ideas.get(0);
-        return firstIdea;
-    }
-
-    public String getFirstMessageRating(){
-        WebElement element=ratingResults.get(0);
-        String rating=element.getText();
-        return rating;
-    }
 
     public void clickLikeButton(){
-        if(!positiveRatingButton.get(0).isSelected()){
+        if(getPlusButtonTitleAttribute().equals("Like")){
         WebElement element=positiveRatingButton.get(0);
         element.click();
         }
     }
     public void unClickLikeButton(){
-        if(positiveRatingButton.get(0).isSelected()){
+        if(getPlusButtonTitleAttribute().equals("Stop liking this item")){
             WebElement element=positiveRatingButton.get(0);
             element.click();
         }
     }
 
     public void clickDislikeButton(){
-        if(!negativeRatingButton.get(0).isSelected()) {
+        if(getMinusButtonTitleAttribute().equals("Unlike")) {
             WebElement element = negativeRatingButton.get(0);
             element.click();
         }
     }
 
     public void unClickDislikeButton(){
-        if(negativeRatingButton.get(0).isSelected()){
+        if(getMinusButtonTitleAttribute().equals("Stop liking this item")){
             WebElement element=negativeRatingButton.get(0);
             element.click();
         }
     }
 
-    public List<String> getIdeasText(){
-        List<String>ideasText=new ArrayList<>();
-        for (WebElement idea : ideas) {
-            ideasText.add(idea.getText());
-        }
-        return ideasText;
+    public String getPlusButtonTitleAttribute(){
+        String str=positiveRatingButton.get(0).getAttribute("title");
+        return str;
+    }
+
+    public String getMinusButtonTitleAttribute(){
+        String str=negativeRatingButton.get(0).getAttribute("title");
+        return str;
     }
 
 

@@ -11,8 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -67,28 +66,69 @@ public class ServicesStepDefs {
     @When("the user clicks plus sign next to Rating")
     public void the_user_clicks_plus_sign_next_to_Rating() {
         ServicesPage servicesPage=new ServicesPage();
+
         servicesPage.clickLikeButton();
+        Driver.get().navigate().refresh();
+        BrowserUtils.waitFor(1);
+
     }
 
-    //Assertion Error
+    @When("the user unclicks plus sign next to Rating")
+    public void the_user_unclicks_plus_sign_next_to_Rating() {
+        ServicesPage servicesPage=new ServicesPage();
+
+        servicesPage.unClickLikeButton();
+        Driver.get().navigate().refresh();
+        BrowserUtils.waitFor(1);
+    }
+
+
     @Then("Like button should be selected")
     public void like_button_should_be_selected() {
         ServicesPage servicesPage=new ServicesPage();
-        WebElement element=servicesPage.positiveRatingButton.get(0);
-        Assert.assertTrue(element.isSelected());
+
+        Assert.assertTrue(servicesPage.getPlusButtonTitleAttribute().equals("Stop liking this item"));
+
     }
+
+    @Then("Like button should be unselected")
+    public void like_button_should_be_unselected() {
+        ServicesPage servicesPage=new ServicesPage();
+
+        Assert.assertTrue(servicesPage.getPlusButtonTitleAttribute().equals("Like"));
+
+    }
+
 
     @When("the user clicks minus sign next to Rating")
     public void the_user_clicks_minus_sign_next_to_Rating() {
         ServicesPage servicesPage=new ServicesPage();
         servicesPage.clickDislikeButton();
+        Driver.get().navigate().refresh();
+        BrowserUtils.waitFor(1);
     }
+
+    @When("the user unclicks minus sign next to Rating")
+    public void the_user_unclicks_minus_sign_next_to_Rating() {
+        ServicesPage servicesPage=new ServicesPage();
+        servicesPage.unClickDislikeButton();
+        Driver.get().navigate().refresh();
+        BrowserUtils.waitFor(1);
+    }
+
 
     @Then("Dislike button should be selected")
     public void dislike_button_should_be_selected() {
         ServicesPage servicesPage=new ServicesPage();
-        WebElement element=servicesPage.negativeRatingButton.get(0);
-        Assert.assertFalse(element.isSelected());
+
+        Assert.assertTrue(servicesPage.getMinusButtonTitleAttribute().equals("Stop liking this item"));
+    }
+
+    @Then("Dislike button should be unselected")
+    public void dislike_button_should_be_unselected() {
+        ServicesPage servicesPage=new ServicesPage();
+
+        Assert.assertTrue(servicesPage.getMinusButtonTitleAttribute().equals("Unlike"));
     }
 
     @When("the user clicks date added button")
@@ -99,8 +139,12 @@ public class ServicesStepDefs {
     }
 
     @Then("the user should see the messages sorted by date")
-    public void the_user_should_see_the_messages_sorted_by_date() {
+    public void the_user_should_see_the_messages_sorted_by_date() throws ParseException {
         ServicesPage servicesPage=new ServicesPage();
+
+        System.out.println(servicesPage.getDatesOfTheMessages());
+
+        servicesPage.sortByDate();
     }
     //master branch
 
