@@ -6,6 +6,7 @@ Feature: User should be able to login
     When the "help desk user" enters the username password
     Then the "help desk user" should be able to login
 
+
   Scenario: Login as a <userType>
     Given the "human resource user" is on the login page
     When the "human resource user" enters the username password

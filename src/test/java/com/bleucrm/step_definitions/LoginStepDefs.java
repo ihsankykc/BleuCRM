@@ -28,8 +28,8 @@ public class LoginStepDefs {
     public void the_should_be_able_to_login(String string) {
         String actualUrl=Driver.get().getCurrentUrl();
         String expectedUrl="https://qa.bleucrm.com/stream/?login=yes";
-//        System.out.println("actualUrl = " + actualUrl);
-//        System.out.println("expectedUrl = " + expectedUrl);
+        System.out.println("actualUrl = " + actualUrl);
+        System.out.println("expectedUrl = " + expectedUrl);
         Assert.assertEquals(expectedUrl,actualUrl);
     }
 
@@ -43,10 +43,6 @@ public class LoginStepDefs {
         loginPage.login2(string);
         BrowserUtils.waitFor(1);
 
-        //verify url
-        String actualUrl=Driver.get().getCurrentUrl();
-        String expectedUrl="https://qa.bleucrm.com/stream/?login=yes";
-        Assert.assertEquals(expectedUrl,actualUrl);
     }
 
 

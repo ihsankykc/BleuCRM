@@ -16,3 +16,6 @@ import org.junit.runner.RunWith;
 )
 public class CukesRunner {
 }
+
+//Expected :https://qa.bleucrm.com/stream/?login=yes
+//Actual   :https://qa.bleucrm.com/?login=yes
