@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "com/bleucrm/step_definitions",
         dryRun = false,
-        tags = "@wip"
+        tags = "@BLEU-702"
 )
 public class CukesRunner {
 }

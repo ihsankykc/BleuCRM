@@ -8,20 +8,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 public class ServicesPage extends BasePage {
     @FindBy(xpath = "//div[@id='idea-posts-content']//div[@class='idea-owner']")
     public List<WebElement> dateOfPost;
 
-    @FindBy(xpath = "//div[@id='idea-posts-content']/div")
-    public List<WebElement> ideas;
+    @FindBy(xpath = "//a[contains(@id,'anchor')]")
+    public List<WebElement> ideaOwner;
 
     @FindBy(xpath = "//span[contains(@id,'result')]")
     public List<WebElement> ratingResults;
@@ -67,38 +65,34 @@ public class ServicesPage extends BasePage {
     public List<WebElement> errorMessage;
 
 
-    public List<String> getTextOfTheMessages(){
+    public List<String> getDatesWithOutIdeaOwner(){
         List<String> dates = new ArrayList<>();
-        for (WebElement element : dateOfPost) {
-            dates.add(element.getText());
-        }
-        return dates;
-    }
-
-    public List<String> getDatesOfTheMessages(){
-        List<String>texts=getTextOfTheMessages();
-        List<String>dateStr=new ArrayList<>();
-        for (String text : texts) {
-            String[] arrOfStr=text.split(".com");
-            for (String s : arrOfStr) {
-                System.out.println(arrOfStr[1]);
-                dateStr.add(arrOfStr[1]);
-            }
+        List<String> ideaOwners=new ArrayList<>();
+        List<String> datesWithOutIdeaOwner = new ArrayList<>();
+        String[] arr=new String[10];
+        for (int i=0;i<10;i++) {
+            dates.add(dateOfPost.get(i).getText());
+            ideaOwners.add(ideaOwner.get(i).getText());
         }
 
-        return dateStr;
+        for (int i=0;i<10;i++) {
+             arr=dates.get(i).split(ideaOwners.get(i));
+             datesWithOutIdeaOwner.add(arr[1]);
+        }
+        return datesWithOutIdeaOwner;
     }
 
-    public void sortByDate() throws ParseException {
+
+    public List<Date> sortByDate() throws ParseException {
         List<Date> listDates =new ArrayList<>();
-        List<String>datesAsString=getDatesOfTheMessages();
-        SimpleDateFormat dateFormat=new SimpleDateFormat(" MMMM dd, yyyy HH:mma");
+        List<String>datesAsString=getDatesWithOutIdeaOwner();
+        SimpleDateFormat dateFormat=new SimpleDateFormat(" MMMM dd, yyyy HH:mm a");
 
         for (String str : datesAsString) {
             listDates.add(dateFormat.parse(str));
         }
 
-        System.out.println(listDates.toString());
+        return listDates;
     }
 
     public void servicesPageModules(String module){

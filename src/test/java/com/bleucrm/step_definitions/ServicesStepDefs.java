@@ -4,17 +4,13 @@ import com.bleucrm.pages.DashboardPage;
 import com.bleucrm.pages.ServicesPage;
 import com.bleucrm.utilities.BrowserUtils;
 import com.bleucrm.utilities.Driver;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServicesStepDefs {
 
@@ -141,10 +137,24 @@ public class ServicesStepDefs {
 
     @Then("the user should see the messages sorted by date")
     public void the_user_should_see_the_messages_sorted_by_date() throws ParseException {
+        List<Date> actualDates=new ArrayList<>();
+        List<Date> expectedDates=new ArrayList<>();
+
         ServicesPage servicesPage = new ServicesPage();
-        servicesPage.sortByDate();
-        System.out.println("verification error");
-        Assert.fail("verification error");
+
+        actualDates=servicesPage.sortByDate();
+        expectedDates=servicesPage.sortByDate();
+        Collections.sort(expectedDates);
+        Collections.reverse(expectedDates);
+
+        System.out.println("actualDates = " + actualDates.toString());
+        System.out.println("expectedDates = " + expectedDates.toString());
+
+        Assert.assertTrue("verify dates are sorted",actualDates.equals(expectedDates));
+        //the problem is on the webpage there are date as " February 20, 2022 12:59 am"
+        //I think after 12.00 it should reset to 00.00
+        //while it resets at 13.00
+
     }
     //master branch
 
