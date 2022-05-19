@@ -70,12 +70,12 @@ public class ServicesPage extends BasePage {
         List<String> ideaOwners=new ArrayList<>();
         List<String> datesWithOutIdeaOwner = new ArrayList<>();
         String[] arr=new String[10];
-        for (int i=0;i<10;i++) {
+        for (int i=0;i<9;i++) {
             dates.add(dateOfPost.get(i).getText());
             ideaOwners.add(ideaOwner.get(i).getText());
         }
 
-        for (int i=0;i<10;i++) {
+        for (int i=0;i<9;i++) {
              arr=dates.get(i).split(ideaOwners.get(i));
              datesWithOutIdeaOwner.add(arr[1]);
         }
@@ -91,6 +91,8 @@ public class ServicesPage extends BasePage {
         for (String str : datesAsString) {
             listDates.add(dateFormat.parse(str));
         }
+
+        System.out.println(listDates.toString());
 
         return listDates;
     }
